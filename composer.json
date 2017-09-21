@@ -1,0 +1,27 @@
+{
+    "name": "aragorn-yang/yy-imap-php",
+    "description": "A wrapper over PHP IMAP functions",
+    "keywords": [
+        "IMAP",
+        "PHP"
+    ],
+    "homepage": "https://github.com/aragorn-yang/yy-imap-php",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Aragorn Yang",
+            "homepage": "https://github.com/aragorn-yang",
+            "email": "aragorn.yang@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "ext-imap": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imap\\": "src/"
+        }
+    }
+}

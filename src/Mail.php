@@ -148,4 +148,9 @@ class Mail
         return $data;
     }
 
+    public function getHeader(): Header
+    {
+        return $this->header;
+    }
+
 }

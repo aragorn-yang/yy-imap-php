@@ -121,9 +121,9 @@ class Mail
 
     private function decodeBodyPart($data, $encoding)
     {
-        if ($encoding === ENC7BIT) {
-            return imap_utf7_decode($data);
-        }
+        //if ($encoding === ENC7BIT) {
+        //    return imap_utf7_decode($data);
+        //}
 
         if ($encoding === ENC8BIT) {
             return imap_utf8($data);

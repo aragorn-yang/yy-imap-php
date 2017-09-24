@@ -75,7 +75,7 @@ class Mail
         $data = $this->decodeBodyPart($data, $partStructure->encoding);
         $params = $this->getParams($partStructure);
         if (!empty($params['charset'])) {
-            $data = Helper::convertEncoding($data, $params['charset'], $this->serverEncoding);
+            $data = Helper::convertEncoding($data, $params['charset'], $this->getServerEncoding());
         }
         if ($partStructure->type === TYPETEXT && $data) {
             if (strtolower($partStructure->subtype) === 'plain') {
@@ -151,6 +151,11 @@ class Mail
     public function getHeader(): Header
     {
         return $this->header;
+    }
+
+    public function getServerEncoding(): string
+    {
+        return $this->serverEncoding;
     }
 
 }

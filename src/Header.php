@@ -10,10 +10,6 @@ class Header
      */
     public $headers;
     /**
-     * @var string
-     */
-    private $serverEncoding;
-    /**
      * @var Mail
      */
     private $mail;
@@ -69,7 +65,7 @@ class Header
             $this->date = date('Y-m-d H:i:s', strtotime($this->headers->date));
         }
         if (isset($this->headers->subject)) {
-            $this->subject = $this->decodeMimeHeader($this->headers->subject, $this->serverEncoding);
+            $this->subject = $this->decodeMimeHeader($this->headers->subject, $this->getServerEncoding());
         }
         if (isset($this->headers->from)) {
             $this->from = $this->beautifyPersons($this->headers->from);
@@ -100,7 +96,7 @@ class Header
                 $name = '';
                 $email = strtolower($person->mailbox . '@' . $person->host);
                 if (isset($person->personal)) {
-                    $name = $this->decodeMimeHeader($person->personal, $this->serverEncoding);
+                    $name = $this->decodeMimeHeader($person->personal, $this->getServerEncoding());
                 }
                 $beautified[$email] = $name;
             }
@@ -121,6 +117,11 @@ class Header
         }
 
         return $decoded;
+    }
+
+    private function getServerEncoding(): string
+    {
+        return $this->mail->getServerEncoding();
     }
 
 }

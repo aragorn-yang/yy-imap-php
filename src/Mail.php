@@ -52,7 +52,7 @@ class Mail
 
     public function fetchBody(bool $markAsSeen = true): void
     {
-        $structure = imap_fetchstructure($this->getStream(), $this->id, FT_UID);
+        $structure = \imap_fetchstructure($this->getStream(), $this->id, FT_UID);
         if (empty($structure->parts)) {
             $this->processMailPart($structure, 0, $markAsSeen);
 
@@ -69,8 +69,8 @@ class Mail
         if (!$markAsSeen) {
             $options |= FT_PEEK;
         }
-        $data = $partNum ? imap_fetchbody($this->getStream(), $this->id, $partNum,
-            $options) : imap_body($this->getStream(), $this->id, $options);
+        $data = $partNum ? \imap_fetchbody($this->getStream(), $this->id, $partNum,
+            $options) : \imap_body($this->getStream(), $this->id, $options);
 
         $data = $this->decodeBodyPart($data, $partStructure->encoding);
         $params = $this->getParams($partStructure);
@@ -122,23 +122,23 @@ class Mail
     private function decodeBodyPart($data, $encoding)
     {
         //if ($encoding === ENC7BIT) {
-        //    return imap_utf7_decode($data);
+        //    return \imap_utf7_decode($data);
         //}
 
         if ($encoding === ENC8BIT) {
-            return imap_utf8($data);
+            return \imap_utf8($data);
         }
 
         if ($encoding === ENCBINARY) {
-            return imap_binary($data);
+            return \imap_binary($data);
         }
 
         if ($encoding === ENCBASE64) {
-            return imap_base64($data);
+            return \imap_base64($data);
         }
 
         if ($encoding === ENCQUOTEDPRINTABLE) {
-            return quoted_printable_decode($data);
+            return \quoted_printable_decode($data);
         }
 
         if ($encoding === ENCOTHER) {

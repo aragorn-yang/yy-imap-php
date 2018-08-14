@@ -84,7 +84,7 @@ class Mailbox
     public function connect(): void
     {
         $params = $this->getParams();
-        $this->stream = imap_open($this->getMailbox(), $this->username, $this->password, $this->options,
+        $this->stream = \imap_open($this->getMailbox(), $this->username, $this->password, $this->options,
             $this->numOfRetries, $params);
         if (!$this->stream) {
             throw (new ExceptionFactory)->getExceptionFromImapError();
@@ -93,14 +93,14 @@ class Mailbox
 
     public function disconnect(bool $expungeOnDisconnecting = true): void
     {
-        if ($this->stream && is_resource($this->stream)) {
-            imap_close($this->stream, $expungeOnDisconnecting ? CL_EXPUNGE : 0);
+        if ($this->stream && \is_resource($this->stream)) {
+            \imap_close($this->stream, $expungeOnDisconnecting ? CL_EXPUNGE : 0);
         }
     }
 
     public function search(string $criteria = 'ALL'): array
     {
-        $mailIds = imap_search($this->getStream(), $criteria, SE_UID);
+        $mailIds = \imap_search($this->getStream(), $criteria, SE_UID);
 
         return $mailIds ?: [];
     }
@@ -116,18 +116,18 @@ class Mailbox
 
     public function delete(int $mailId): bool
     {
-        return imap_delete($this->getStream(), $mailId, FT_UID);
+        return \imap_delete($this->getStream(), $mailId, FT_UID);
     }
 
-    public function getListingFolders()
+    public function getListingFolders(): array
     {
-        return imap_list($this->getStream(), $this->getMailbox(), '*');
+        return \imap_list($this->getStream(), $this->getMailbox(), '*');
     }
 
     public function switchMailbox($mailbox = ''): void
     {
         $this->setMailbox($mailbox);
-        if (!imap_reopen($this->stream, $this->getMailbox())) {
+        if (!\imap_reopen($this->stream, $this->getMailbox())) {
             throw (new ExceptionFactory)->getExceptionFromImapError();
         }
     }
@@ -142,7 +142,7 @@ class Mailbox
         /**
          * e.g. "已删除" will be converted into "&XfJSIJZk-"
          */
-        $this->mailbox = mb_convert_encoding($mailbox, 'UTF7-IMAP', 'UTF-8');
+        $this->mailbox = \mb_convert_encoding($mailbox, 'UTF7-IMAP', 'UTF-8');
 
         return $this;
     }
@@ -205,11 +205,11 @@ class Mailbox
         if ($this->ntlmDisabled) {
             $disabledAuth[] = 'NTLM';
         }
-        if (count($disabledAuth) > 1) {
+        if (\count($disabledAuth) > 1) {
             return ['DISABLE_AUTHENTICATOR' => $disabledAuth];
         }
 
-        if (count($disabledAuth) === 1) {
+        if (\count($disabledAuth) === 1) {
             return ['DISABLE_AUTHENTICATOR' => $disabledAuth[0]];
         }
         return [];

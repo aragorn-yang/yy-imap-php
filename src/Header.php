@@ -58,8 +58,8 @@ class Header
 
     public function parseHeaders(): void
     {
-        $rawHeaders = imap_fetchheader($this->mail->getStream(), $this->mail->id, FT_UID);
-        $this->headers = imap_rfc822_parse_headers($rawHeaders);
+        $rawHeaders = \imap_fetchheader($this->mail->getStream(), $this->mail->id, FT_UID);
+        $this->headers = \imap_rfc822_parse_headers($rawHeaders);
         $this->messageId = $this->headers->message_id ?? 0;
         if (isset($this->headers->date)) {
             $this->date = date('Y-m-d H:i:s', strtotime($this->headers->date));
@@ -108,7 +108,7 @@ class Header
     private function decodeMimeHeader($encoded, string $charset = 'utf-8'): string
     {
         $decoded = '';
-        $elements = imap_mime_header_decode($encoded);
+        $elements = \imap_mime_header_decode($encoded);
         foreach ($elements as $element) {
             if ($element->charset === 'default') {
                 $element->charset = 'iso-8859-1';

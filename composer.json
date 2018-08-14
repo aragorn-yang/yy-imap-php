@@ -16,7 +16,9 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": ">=7.1",
+        "ext-imap": "*",
+        "ext-mbstring": "*"
     },
     "autoload": {
         "psr-4": {
